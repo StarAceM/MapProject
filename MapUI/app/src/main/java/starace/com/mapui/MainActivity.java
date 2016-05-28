@@ -2,31 +2,58 @@ package starace.com.mapui;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
+
 
 public class MainActivity extends AppCompatActivity {
+    public static final String KEY_MAP_BUNDLE = "Map_ID";
+    private FrameLayout mapContainerLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        initViews();
+
+
+    }
+
+    private void initViews(){
+        //mapContainerLayout = (FrameLayout) findViewById(R.id.framelayout_map_fragment);
+        WorldMapFragment worldFragment = new WorldMapFragment();
+        Bundle mapBundle = new Bundle();
+        mapBundle.putInt(KEY_MAP_BUNDLE, R.drawable.world_map_continents);
+        worldFragment.setArguments(mapBundle);
+
+        FragmentManager mapFragmentManager = getSupportFragmentManager();
+        mapFragmentManager.beginTransaction()
+                .add(R.id.framelayout_map_fragment,worldFragment)
+                .commit();
+
+    }
+
+
+
+    private void initDefault(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
     }
+
+
+
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
