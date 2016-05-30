@@ -5,15 +5,15 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements WorldMapListener.WorldMapClick{
     public static final String KEY_MAP_BUNDLE = "Map_ID";
-    private FrameLayout mapContainerLayout;
-
+    public static final String KEY_CONTINENT_BUNDLE = "Continent_Name";
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,38 +22,42 @@ public class MainActivity extends AppCompatActivity {
 
         initViews();
 
-
     }
 
     private void initViews(){
-        //mapContainerLayout = (FrameLayout) findViewById(R.id.framelayout_map_fragment);
         WorldMapFragment worldFragment = new WorldMapFragment();
         Bundle mapBundle = new Bundle();
         mapBundle.putInt(KEY_MAP_BUNDLE, R.drawable.world_map_continents);
         worldFragment.setArguments(mapBundle);
 
-        FragmentManager mapFragmentManager = getSupportFragmentManager();
-        mapFragmentManager.beginTransaction()
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
                 .add(R.id.framelayout_map_fragment,worldFragment)
                 .commit();
 
     }
 
+    @Override
+    public void setContinentFragment(String continent) {
+        //create and swap fragment here
+        Log.d("MainActivity", "This is the continent passed from the listener " + continent);
+        ContinentFragment continentFragment = new ContinentFragment();
+        Bundle continentBundle = new Bundle();
+        continentBundle.putString(KEY_CONTINENT_BUNDLE, continent);
+        continentFragment.setArguments(continentBundle);
+        fragmentManager.beginTransaction()
+                .replace(R.id.framelayout_map_fragment,continentFragment)
+                .addToBackStack(null)
+                .commit();
 
+    }
 
     private void initDefault(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
     }
-
-
-
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

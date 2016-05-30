@@ -4,10 +4,22 @@
     android:layout_height="wrap_content"
     android:id="@+id/fragment_relative_layout">
 
+    <TextView
+        android:id="@+id/world_map_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/language_seach_title"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="20dp"/>
+
     <ImageView
         android:id="@+id/map_image"
         android:layout_width="match_parent"
         android:layout_height="300dp"
+        android:layout_below="@+id/world_map_title"
+        android:layout_marginTop="20dp"
        />
 
 </RelativeLayout>

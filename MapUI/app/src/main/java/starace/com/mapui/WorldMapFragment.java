@@ -33,6 +33,7 @@ public class WorldMapFragment extends Fragment {
     public void initMapFragmentClickListener(){
         ViewGroup root = (ViewGroup) getActivity().findViewById(R.id.fragment_relative_layout);
         mapListener = new WorldMapListener(getActivity(),null, root);
+        mapListener.createRectangles();
         mapImage.setOnTouchListener(mapListener);
 
     }

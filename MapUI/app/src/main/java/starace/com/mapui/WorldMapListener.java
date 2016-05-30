@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +20,7 @@ public class WorldMapListener extends View implements View.OnTouchListener{
     private Context context;
     private View mapView;
     private String[] continents;
+    private List<Rect> worldMapRects;
 
     public WorldMapListener(Context context, AttributeSet attrs, ViewGroup root) {
         super(context, attrs);
@@ -30,8 +30,6 @@ public class WorldMapListener extends View implements View.OnTouchListener{
 
     }
 
-
-
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         mapView = v;
@@ -40,7 +38,9 @@ public class WorldMapListener extends View implements View.OnTouchListener{
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 String location = checkTouchLocation((int)event.getRawX(),(int)event.getRawY());
-                Toast.makeText(context,"The Continent Selected is " +location,Toast.LENGTH_SHORT).show();
+                WorldMapClick continentSetter = (WorldMapClick) context;
+                continentSetter.setContinentFragment(location);
+//                Toast.makeText(context,"The Continent Selected is " +location,Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;
@@ -50,7 +50,6 @@ public class WorldMapListener extends View implements View.OnTouchListener{
     }
 
     private String checkTouchLocation(int x, int y){
-        List<Rect> worldMapRects = createRectangles();
 
         for (int i = 0; i < worldMapRects.size();i++){
            if(worldMapRects.get(i).contains(x,y)){
@@ -61,16 +60,19 @@ public class WorldMapListener extends View implements View.OnTouchListener{
         return "";
     }
 
-    private List<Rect> createRectangles(){
-        List<Rect> worldMapRects = new ArrayList<>();
+    public interface WorldMapClick{
+        void setContinentFragment(String continent);
+    }
+
+    public void createRectangles(){
+        worldMapRects = new ArrayList<>();
         for(int i = 0; i < continents.length; i++){
 
             switch (continents[i]){
                 case "North America":
                     //will need to be relative values based on screen size
-                    Rect curContinentRect = new Rect(20,500,500,780);
+                    Rect curContinentRect = new Rect(20,750,500,1080);
                     Log.d("Listener", curContinentRect.height() + " " + curContinentRect.width() + " " +curContinentRect.exactCenterX());
-//                    curContinentRect.offset(90,340);
                     worldMapRects.add(i,curContinentRect);
                     break;
                 default:
@@ -78,8 +80,6 @@ public class WorldMapListener extends View implements View.OnTouchListener{
 
             }
         }
-
-        return worldMapRects;
     }
 
 }
